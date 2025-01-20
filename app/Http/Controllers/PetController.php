@@ -45,7 +45,7 @@ class PetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $id)
+    public function show(string $id)
     {
         return $this->showForm($id);
     }
@@ -53,7 +53,7 @@ class PetController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(int $id)
+    public function edit(string $id)
     {
         return $this->showForm($id, 'edit');
     }
@@ -61,7 +61,7 @@ class PetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PetRequest $request, int $id)
+    public function update(PetRequest $request, string $id)
     {
         try {
             $petId = $this->petService->update($request->toDto());
@@ -75,7 +75,7 @@ class PetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function delete(int $id)
+    public function delete(string $id)
     {
         return $this->showForm($id, 'delete');
     }
@@ -83,10 +83,10 @@ class PetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(string $id)
     {
         try {
-            $this->petService->delete($id);
+            $this->petService->delete((int)$id);
         } catch (\Throwable $exception) {
             return redirect()->route('pets.delete', $id)->withErrors($exception->getMessage());
         }
@@ -94,10 +94,10 @@ class PetController extends Controller
         return redirect()->route('pets.index')->with('success', 'Pet deleted successfully [ID: ' . $id . ']');
     }
 
-    private function showForm(int $id, string $action = 'show')
+    private function showForm(string $id, string $action = 'show')
     {
         try {
-            $pet = $this->petService->getById($id);
+            $pet = $this->petService->getById((int)$id);
         } catch (\Throwable $exception) {
             return redirect()->route('pets.index')->withErrors($exception->getMessage());
         }
